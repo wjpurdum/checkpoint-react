@@ -9,6 +9,8 @@ Edit the snippet below. Pass default properties into the `App` component, named 
 ```js
 // assume necessary modules/components are already imported above
 ReactDOM.render(
+  <This is the title: title={"My favorite site"} />
+  <This is the autor: author={"Whitney Purdum"} />
   <App />,
   document.getElementById('root')
 );
@@ -24,8 +26,8 @@ class App extends Component {
   render () {
     return (
       <div>
-        <h1>Welcome to</h1>
-        <footer>This site is designed by</footer>
+        <h1>Welcome to {this.props.title}</h1>
+        <footer>This site is designed by {this.props.author}</footer>
       </div>
     )
   }
@@ -39,11 +41,14 @@ Given a component named `Post` located in `/js/components/Post/Post.js`. Edit th
 
 ```js
 // assume Component and Comments are imported above
+import Post from './Post.Post.js'
+
 class Main extends Component {
   render () {
     return (
       <div>
         <Comments />
+        <Post body={this.props.post} />
       </div>
     )
   }
@@ -53,7 +58,7 @@ class Main extends Component {
 
 ### Question #4
 
-Products receives a property called `listing` containing an array of objects. Each object contains a key for `name` (a string) and `price` (a number). Edit the below code snippet to render a list of `Comment` components that take `name` and `price` as incoming properties.
+Products receives a property called `listing` containing an array of objects. Each object contains a key for `name` (a string) and `price` (a number). Edit the below code snippet to render a list of `Product` components that take `name` and `price` as incoming properties.
 
 ```js
 // assume Component and Product are imported above
@@ -74,6 +79,11 @@ In the code snippet below we want text entered into the input field to be displa
 ```js
 // assume all necessary components are imported above
 class App extends Component {
+  constructor(props) {
+    this.state= {
+      message: ""
+    }
+  }
   render() {
     return (
       <div>
@@ -96,7 +106,7 @@ class App extends Component {
 You are in your terminal, inside of an existing react application. Enter the command(s) needed to add `React Router` to the current app.
 
 ```bash
-# your command(s) here
+npm install --save react-router-dom
 ```
 
 ### Question #7
@@ -108,16 +118,21 @@ Edit the following code snippet. Add the Router component, and rewrite the rest 
 class App extends Component {
   render () {
     return (
-      <div>
-        <h1>Welcome to My shopping site</h1>
-        <nav>
-          <a href="/">Home</a>
-          <a href="/products">Products</a>
-          <a href="/cart">Shopping Cart</a>
-        </nav>
-        <main/>
-        <footer>This site is designed by us</footer>
-      </div>
+      <Router>
+        <div>
+          <h1>Welcome to My shopping site</h1>
+          <nav>
+            <Link to="/">Home</Link>
+            <Link to="/products">Products</Link>
+            <Link to="/cart">Shopping Cart</Link>
+          </nav>
+          <main>
+            <Route path="/products" render={Products}/>
+            <Route path="/cart" render={Cart}/>
+          </main>
+          <footer>This site is designed by us</footer>
+        </div>
+      </Router>
     )
   }
 }
@@ -131,7 +146,21 @@ Edit the code snippet below. Only once when the component has loaded, make an AJ
 ```js
 // assume all necessary components are imported above
 class App extends Component {
-  // assume the constructor is complete
+  constructor(props){
+    this.state= {
+      results: {}
+    }
+  }
+  componentDidMount() {
+    let url='http://api.example.com/info'
+    $.ajax({
+      url,
+      method: "GET",
+      dataType: "json"
+    }).then((response)=> {
+      this.setState({results: response})
+    })
+  }
   render () {
     return (
       <div>
