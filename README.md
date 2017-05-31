@@ -80,11 +80,15 @@ In the code snippet below we want text entered into the input field to be displa
 // assume all necessary components are imported above
 class App extends Component {
   constructor(props) {
+    this.handleMessageUpdate = this.handleMessageUpdate.bind(this)
     this.state= {
       message: ""
     }
   }
   render() {
+    handleMessageUpdate(input){
+      this.setState({message: input})
+    }
     return (
       <div>
         <form>
@@ -98,6 +102,7 @@ class App extends Component {
 }
 // assume we are exporting correctly below
 ```
+
 
 ## React-Router
 
